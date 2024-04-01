@@ -3,6 +3,8 @@ Client in memory database
 
 Inspired by Tuomas Artman's talk at 2020 [React Helsinki meetup](), I decided to create a simple in memory database.
 
+![Screenshot](./screenshot.png)
+
 The approach is to use the decorators to define the relationships between the models.
 
 When using the `@OneToMany` decorator on a property like this:
