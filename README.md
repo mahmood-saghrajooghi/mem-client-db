@@ -1,7 +1,7 @@
 Client in memory database
 
 
-Inspired by Tuomas Artman's talk at 2020 [React Helsinki meetup](https://www.youtube.com/watch?v=WxK11RsLqp4&t=2175s), I decided to create a simple in memory database.
+Inspired by Tuomas Artman's talk at 2020 [React Helsinki meetup]([https://www.youtube.com/watch?v=WxK11RsLqp4&t=2175s](https://www.youtube.com/live/WxK11RsLqp4?si=k8NQ8SnAw6s2I6qF&t=3121)), I decided to create a simple in memory database.
 
 ![Screenshot](./screenshot.png)
 
