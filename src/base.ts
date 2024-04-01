@@ -61,9 +61,10 @@ export function OneToMany<T extends typeof Model>(getModel: () => T) {
 
     const getter = function () {
       const model = getModel();
+      const foreignKey = `${(target.constructor as any).modelName.toLowerCase()}_id`;
       for(let instance of (model as any).instances.values()) {
         // @ts-ignore
-        if (instance.user_id === this.id) {
+        if (instance[foreignKey] === this.id) {
           value.add(instance);
         }
       }
