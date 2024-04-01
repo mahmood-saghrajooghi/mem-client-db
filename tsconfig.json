@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "target": "es2015",               // Set the JavaScript version for output files
+    "module": "commonjs",          // Use commonjs module system
+    "outDir": "./dist",            // Set output directory for compiled files
+    "rootDir": "./src",            // Set the root directory for TypeScript files
+    "strict": true,                // Enable all strict type-checking options
+    "esModuleInterop": true,       // Enables module interop compatibility
+    "skipLibCheck": true,          // Skip type checking of declaration files
+    "forceConsistentCasingInFileNames": true, // Disallow inconsistently-cased references
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true
+  },
+  "include": ["src/**/*"],         // Include all files in src directory
+  "exclude": ["node_modules"]      // Exclude the node_modules directory
+}
