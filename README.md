@@ -1,37 +1,69 @@
-Client in memory database
+# React + TypeScript + Vite
 
+This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
-Inspired by Tuomas Artman's talk at 2020 [React Helsinki meetup](), I decided to create a simple in memory database.
+Currently, two official plugins are available:
 
-![Screenshot](./screenshot.png)
+- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
+- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
 
-The approach is to use the decorators to define the relationships between the models.
+## Expanding the ESLint configuration
 
-When using the `@OneToMany` decorator on a property like this:
+If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
 
-```typescript
-class User {
-  public static modelName = 'user';
+```js
+export default tseslint.config([
+  globalIgnores(['dist']),
+  {
+    files: ['**/*.{ts,tsx}'],
+    extends: [
+      // Other configs...
 
-  @OneToMany(() => Task)
-  tasks: Task[];
-}
+      // Remove tseslint.configs.recommended and replace with this
+      ...tseslint.configs.recommendedTypeChecked,
+      // Alternatively, use this for stricter rules
+      ...tseslint.configs.strictTypeChecked,
+      // Optionally, add this for stylistic rules
+      ...tseslint.configs.stylisticTypeChecked,
+
+      // Other configs...
+    ],
+    languageOptions: {
+      parserOptions: {
+        project: ['./tsconfig.node.json', './tsconfig.app.json'],
+        tsconfigRootDir: import.meta.dirname,
+      },
+      // other options...
+    },
+  },
+])
 ```
 
-when accessing the `posts` property, the decorator will automatically find and return all the posts that have the same `user_id` as the current user. the `user_id` is the foreign key that is used to define the relationship between the `User` and `Task` models. It is derived from the `modelName` property of the `User` model.
+You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
 
-The `@ManyToOne` decorator is used to define the inverse relationship. It is used on the property that is the foreign key in the relationship.
+```js
+// eslint.config.js
+import reactX from 'eslint-plugin-react-x'
+import reactDom from 'eslint-plugin-react-dom'
 
-```typescript
-class Task {
-  public static modelName = 'task';
-
-  user_id: number;
-
-  @ManyToOne(() => User, 'tasks')
-  user: User;
-}
+export default tseslint.config([
+  globalIgnores(['dist']),
+  {
+    files: ['**/*.{ts,tsx}'],
+    extends: [
+      // Other configs...
+      // Enable lint rules for React
+      reactX.configs['recommended-typescript'],
+      // Enable lint rules for React DOM
+      reactDom.configs.recommended,
+    ],
+    languageOptions: {
+      parserOptions: {
+        project: ['./tsconfig.node.json', './tsconfig.app.json'],
+        tsconfigRootDir: import.meta.dirname,
+      },
+      // other options...
+    },
+  },
+])
 ```
-
-when accessing the `user` property, the decorator will automatically find and return the user that has the same `user_id` as the current task, it will also add the task to the user's `tasks` collection.
-The `ManyToOne` decorator expects the `user_id` property to be the foreign key because it is called on the property `user`.
