@@ -1,6 +1,10 @@
 import { ApplicationSyncedStore } from './application-synced-store';
+import { Model } from './model';
 import type { Client } from './client';
 
+const getApplicationStore = () => {
+  return ApplicationStore.instance.store;
+}
 
 export class ApplicationStore {
   currentUserId: string | null = null;
@@ -103,3 +107,5 @@ export class ApplicationStore {
     }
   }
 }
+
+Model.store = getApplicationStore();

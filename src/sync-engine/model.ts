@@ -1,16 +1,18 @@
+import type { ApplicationSyncedStore } from './application-synced-store';
 import { LoadStrategy, ModelRegistry } from './model-registry';
-import type { LoadStrategyType } from './model-registry';
-import type { Store } from './store-manager';
 
 export class Model {
   // This is set by ClientModel decorator
   modelName!: string;
 
-  static store: Store;
+  id!: string;
 
-  store: Store;
+  static store: ApplicationSyncedStore;
 
-  loadStrategy: LoadStrategyType;
+  store: ApplicationSyncedStore;
+
+
+  loadStrategy: typeof LoadStrategy[keyof typeof LoadStrategy];
 
   __data: Record<string, any> = {};
 
@@ -22,10 +24,11 @@ export class Model {
   }
 
 
-  constructor() {
+  constructor(id: string) {
     this.store = Model.store
     // todo: add more load strategies later
     this.loadStrategy = LoadStrategy.instant;
+    this.id = id;
   }
 
   public propertyChanged(propertyName: string, oldValue: any, newValue: any) {

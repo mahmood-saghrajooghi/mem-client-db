@@ -6,10 +6,10 @@ import { User } from './user';
 @ClientModel("Task")
 export class Task extends Model {
   @Property()
-  public title: string | undefined;
+  declare title: string | undefined;
 
-  @Reference(() => User, "assignedTasks", { nullable: true })
-  assignee!: User | null;
+  @Reference(() => User, "assignee", { nullable: true })
+  declare assignee: User | null;
 
-  assigneeId!: string | null;
+  declare assigneeId: string | null;
 }

@@ -55,4 +55,8 @@ export class SyncedStore {
     await this.syncClient.initializeDatabase({ userId, modelSchemaHash: 'xxxx' })
     await this.syncClient.bootstrap();
   }
+
+  findById(modelConstructor: { new(...args: any[]): {} }, id: string) {
+    return this.syncClient.findById(modelConstructor, id);
+  }
 }
