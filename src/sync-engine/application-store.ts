@@ -2,7 +2,7 @@ import { ApplicationSyncedStore } from './application-synced-store';
 import { Model } from './model';
 import type { Client } from './client';
 
-const getApplicationStore = () => {
+export const getApplicationSyncedStore = () => {
   return ApplicationStore.instance.store;
 }
 
@@ -108,4 +108,4 @@ export class ApplicationStore {
   }
 }
 
-Model.store = getApplicationStore();
+Model.store = getApplicationSyncedStore();

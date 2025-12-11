@@ -49,9 +49,9 @@ type ReferencedModel = {
   }
 };
 
-export function Reference<T extends ReferencedModel>(getReferencedModel: () => T, referencedProperty: string, metaData: { nullable: boolean, optional?: boolean}) {
+export function Reference<T extends ReferencedModel>(referencedClassResolver: () => T, referencedProperty: string, metaData: { nullable: boolean, optional?: boolean}) {
   return function <P extends { constructor: { name: string } }>(target: P, propertyKey: string) {
-    registerReference(target, propertyKey, metaData, referencedProperty, getReferencedModel);
+    registerReference(target, propertyKey, metaData, referencedProperty, referencedClassResolver);
   }
 }
 
@@ -62,8 +62,6 @@ function registerReference(target: any, referenceName: string, metaData: { nulla
 
   Object.defineProperty(target, referenceName, {
     get: function () {
-      console.log('get', this[referenceIdentifierKey]);
-
       const referenceId = this[referenceIdentifierKey];
       if(!referenceId) {
         if(!isReferenceOptional) {
@@ -71,8 +69,8 @@ function registerReference(target: any, referenceName: string, metaData: { nulla
         }
         return null;
       }
-      const referencedModelClass = referencedClassResolver();
 
+      const referencedModelClass = referencedClassResolver();
       return referencedModelClass.store.findById(referencedModelClass, referenceId);
     },
     set: function (value: { id: string } | string) {
@@ -81,10 +79,6 @@ function registerReference(target: any, referenceName: string, metaData: { nulla
     enumerable: true,
     configurable: true,
   })
-
-  console.log(target);
-  console.log(referenceName);
-  console.log(Object.getOwnPropertyDescriptor(target, referenceName));
 
   type ReferencedModelPropertyMetaData = {
     type: PropertyType;

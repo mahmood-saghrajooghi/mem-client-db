@@ -14,6 +14,11 @@ export class Model {
 
   loadStrategy: typeof LoadStrategy[keyof typeof LoadStrategy];
 
+  declare createdAt: Date | null;
+  declare updatedAt: Date | null;
+  declare archivedAt: Date | null;
+  modelClass: Function
+
   __data: Record<string, any> = {};
 
   // Stores the old value of the modified properties
@@ -23,12 +28,27 @@ export class Model {
     return ModelRegistry.propertiesOfModel(this.modelName)
   }
 
+  static get modelName() {
+    return this.prototype.modelName
+  }
 
-  constructor(id: string) {
+
+  static createEmpty() {
+    return new this;
+  }
+
+  constructor() {
     this.store = Model.store
+    this.modelClass = this.constructor;
     // todo: add more load strategies later
     this.loadStrategy = LoadStrategy.instant;
-    this.id = id;
+    this.id = crypto.randomUUID();
+  }
+
+  save(isCreate: boolean = false, options: unknown = {}) {
+    const transaction = this.store.save(this, isCreate, options)
+
+    return transaction;
   }
 
   public propertyChanged(propertyName: string, oldValue: any, newValue: any) {
@@ -69,5 +89,23 @@ export class Model {
     if(oldSerializedValue !== newSerializedValue) {
       this.modifiedProperties[propertyName] = oldValue;
     }
+  }
+
+  serialize(): string {
+    // TODO: implement this
+    return '{}';
+  }
+
+  attachToReferencedProperties(): void {
+    // TODO: implement this
+  }
+
+  clearSnapshot(): void {
+    // TODO: implement this
+  }
+
+  createMutation(set: Set<any>, additionalCreationArgs: unknown = {}): string {
+    // TODO: implement this
+    return '';
   }
 }

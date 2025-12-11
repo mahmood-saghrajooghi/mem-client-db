@@ -3,6 +3,7 @@ import type { Options } from './database';
 import { SyncClient } from './sync-client';
 import { UndoQueue } from './undo-queue';
 import type { BatchModelLoader } from './batch-model-loader';
+import type { Model } from './model';
 
 
 export const SyncProgress = {
@@ -49,6 +50,15 @@ export class SyncedStore {
     this.syncClient = new SyncClient(this, this.client, this.socket, this.options);
     this.undoQueue = [];
     this.batchModelLoader = options.batchModelLoader;
+  }
+
+  save(model: Model, isCreate: boolean = false, options: unknown = {}) {
+    const modelAlreadyExists = this.syncClient.findById(model.modelClass, model.id);
+    if(modelAlreadyExists) {
+      this.syncClient.update(model, options);
+    } else {
+      this.syncClient.add(model, options);
+    }
   }
 
   async bootstrap({ userId } : {userId: string}) {

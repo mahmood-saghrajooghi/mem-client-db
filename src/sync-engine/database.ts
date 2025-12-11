@@ -153,4 +153,8 @@ export class Database {
     // todo: implement this
     this.database.put(table, data, id)
   }
+
+  add(table: string, data: any) {
+    // todo: implement this
+  }
 }

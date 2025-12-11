@@ -8,15 +8,15 @@ export class ModelLookup {
   }
 
   add(modelObject: Model): void {
-    if(!modelObject.modelName) {
+    if(!modelObject.modelClass.modelName) {
       throw new Error('Model object must have a model name');
     }
 
-    if(modelObject.id) {
+    if(!modelObject.id) {
       throw new Error('Model object must have an id');
     }
 
-    this.getOrCreateMapForType(modelObject.modelName).set(modelObject.id, modelObject);
+    this.getOrCreateMapForType(modelObject.modelClass.modelName).set(modelObject.id, modelObject);
   }
 
   has(modelName: string, id: string): boolean {
@@ -28,6 +28,10 @@ export class ModelLookup {
   }
 
   getOrCreateMapForType(modelName: string) : Map<string, Model> {
+    if(!modelName) {
+      console.trace('Model name is undefined in getOrCreateMapForType');
+    }
+
     if(!this.modelTypeToIdMap[modelName]) {
       this.modelTypeToIdMap[modelName] = new Map();
     }

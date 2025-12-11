@@ -8,4 +8,18 @@ export class User extends Model {
   declare name: string | undefined;
 
   assignedTasks: Task[] = [];
+
+  static createEmpty(): User {
+    return new this;
+  }
+
+  static create(data: { name: string }): User {
+    const { name } = data;
+
+    const user = this.createEmpty();
+
+    user.name = name;
+
+    return user;
+  }
 }

@@ -6,11 +6,19 @@ import { User } from './models/user';
 
 const applicationStore = ApplicationStore.instance;
 
-const task = new Task("1");
-const user = new User("1");
+console.log(applicationStore);
 
-task.assigneeId = "1";
 
-window.task = Task;
+const user = User.create({
+  name: "John Doe",
+});
+
+user.save();
+
+const task = Task.create(user, {
+  title: "Task 1",
+})
+
+task.save();
 
 console.log(task.assignee);
